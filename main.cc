@@ -48,11 +48,13 @@ int main(int argc, char **argv)
     {
         if(!ros::ok())
             break;
+        cv::Mat greyMat;
+        cv::Mat im = cv::imread(filenames[i], cv::IMREAD_COLOR);
+        cv::cvtColor(im, greyMat, CV_BGR2GRAY);
 
-        cv::Mat im = cv::imread(filenames[i],CV_LOAD_IMAGE_COLOR);
         cv_bridge::CvImage cvImage;
-        cvImage.image = im;
-        cvImage.encoding = sensor_msgs::image_encodings::RGB8;
+        cvImage.image = greyMat;
+        cvImage.encoding = sensor_msgs::image_encodings::MONO8;
         cvImage.header.stamp = t;
         bag_out.write("/camera/image_raw",ros::Time(t),cvImage.toImageMsg());
         t+=d;
