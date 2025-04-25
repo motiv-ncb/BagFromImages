@@ -5,13 +5,22 @@ project(BagFromImages)
 
 rosbuild_init()
 
-FIND_PACKAGE(OpenCV REQUIRED)
+# Find required packages
+find_package(OpenCV REQUIRED)
+find_package(console_bridge REQUIRED)
 
+# Set executable output path
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 
+# Add your executable
 rosbuild_add_executable(${PROJECT_NAME}
-main.cc
-Thirdparty/DLib/FileFunctions.cpp)
+  main.cc
+  Thirdparty/DLib/FileFunctions.cpp
+)
 
-target_link_libraries (${PROJECT_NAME}
-${OpenCV_LIBS})
+# Link libraries
+target_link_libraries(${PROJECT_NAME}
+  ${OpenCV_LIBS}
+  ${console_bridge_LIBRARIES}
+  -lconsole_bridge  # Link console_bridge explicitly
+)
